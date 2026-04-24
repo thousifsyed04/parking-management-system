@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParkWise - Parking Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand"><i class="fa-solid fa-square-parking"></i> ParkWise</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#book">Book</a>
+      <a href="#bookings">Bookings</a>
+      <a href="#billing">Billing</a>
+      <a href="#admin">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>Smart Parking Management in Real Time</h1>
+        <p>Track slots, manage bookings, and calculate fees instantly with a professional dashboard.</p>
+        <div class="hero-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="findParkingInput" type="text" placeholder="Search slot no. or vehicle type (Car/Bike/Truck)" />
+          <button id="findParkingBtn" class="btn btn-primary">Find Parking</button>
+        </div>
+        <button class="btn btn-secondary" onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})">Book a Slot Now</button>
+      </div>
+      <div class="quick-stats">
+        <article><h3>Total Slots</h3><p id="statTotal">0</p></article>
+        <article><h3>Available</h3><p id="statAvailable">0</p></article>
+        <article><h3>Reserved</h3><p id="statReserved">0</p></article>
+      </div>
+    </section>
+
+    <section id="dashboard" class="section">
+      <div class="section-head">
+        <h2>Parking Slot Dashboard</h2>
+        <div class="filter-group">
+          <label for="slotTypeFilter">Filter by Type</label>
+          <select id="slotTypeFilter">
+            <option value="All">All</option>
+            <option value="Car">Car</option>
+            <option value="Bike">Bike</option>
+            <option value="Truck">Truck</option>
+          </select>
+        </div>
+      </div>
+      <div id="slotLegend" class="legend">
+        <span><i class="dot available"></i> Available</span>
+        <span><i class="dot occupied"></i> Occupied</span>
+        <span><i class="dot reserved"></i> Reserved</span>
+      </div>
+      <div id="slotGrid" class="slot-grid"></div>
+    </section>
+
+    <section id="book" class="section">
+      <h2>Book a Slot</h2>
+      <form id="bookingForm" class="booking-form">
+        <input type="text" id="ownerName" placeholder="Owner Name" required />
+        <input type="text" id="vehicleNo" placeholder="Vehicle Number (e.g., MH12AB1234)" required />
+        <select id="vehicleType" required>
+          <option value="">Select Vehicle Type</option>
+          <option value="Car">Car</option>
+          <option value="Bike">Bike</option>
+          <option value="Truck">Truck</option>
+        </select>
+        <input type="datetime-local" id="entryTime" required />
+        <select id="slotSelect" required>
+          <option value="">Select Available Slot</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+      </form>
+      <p id="formMessage" class="form-message"></p>
+    </section>
+
+    <section id="bookings" class="section">
+      <h2>Active Bookings</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot No.</th>
+              <th>Vehicle No.</th>
+              <th>Owner Name</th>
+              <th>Vehicle Type</th>
+              <th>Entry Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="billing" class="section">
+      <h2>Billing & Occupancy Overview</h2>
+      <div class="billing-grid">
+        <article class="card">
+          <h3>Current Revenue</h3>
+          <p id="revenueText">Rs 0.00</p>
+        </article>
+        <article class="card">
+          <h3>Occupancy by Type</h3>
+          <canvas id="occupancyChart" width="480" height="280"></canvas>
+        </article>
+      </div>
+    </section>
+
+    <section id="admin" class="section">
+      <h2>Admin Panel</h2>
+      <div id="adminLocked" class="admin-lock">
+        <input type="password" id="adminPassword" placeholder="Enter admin password" />
+        <button id="unlockAdmin" class="btn btn-primary">Unlock Admin</button>
+        <small>Default password: <code>admin123</code></small>
+      </div>
+      <div id="adminContent" class="admin-content hidden">
+        <div class="admin-actions">
+          <h3>Manage Slots</h3>
+          <div class="inline-form">
+            <input id="newSlotNo" type="text" placeholder="Slot No. (e.g., C-11)" />
+            <select id="newSlotType">
+              <option value="Car">Car</option>
+              <option value="Bike">Bike</option>
+              <option value="Truck">Truck</option>
+            </select>
+            <button id="addSlotBtn" class="btn btn-secondary">Add Slot</button>
+          </div>
+          <div class="inline-form">
+            <select id="removeSlotSelect">
+              <option value="">Select empty slot to remove</option>
+            </select>
+            <button id="removeSlotBtn" class="btn btn-danger">Remove Slot</button>
+          </div>
+        </div>
+        <div class="admin-summary">
+          <h3>Revenue Summary</h3>
+          <p>Total Revenue: <strong id="adminRevenue">Rs 0.00</strong></p>
+          <p>Total Completed Sessions: <strong id="adminSessions">0</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="logs" class="section">
+      <h2>Entry / Exit Logs</h2>
+      <div id="logList" class="log-list"></div>
+    </section>
+  </main>
+
+  <div id="receiptModal" class="modal hidden">
+    <div class="modal-content">
+      <h3><i class="fa-solid fa-receipt"></i> Parking Receipt</h3>
+      <div id="receiptContent"></div>
+      <div class="modal-actions">
+        <button id="printReceiptBtn" class="btn btn-secondary"><i class="fa-solid fa-print"></i> Print Receipt</button>
+        <button id="closeReceiptBtn" class="btn btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
