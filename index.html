@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ParkWise - Parking Management System</title>
+  <title>ParkWise - Smart Parking v2.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="navbar">
+  <div class="bg-grid"></div>
+  <div class="bg-blob blob-a"></div>
+  <div class="bg-blob blob-b"></div>
+
+  <header class="navbar glass">
     <div class="brand"><i class="fa-solid fa-square-parking"></i> ParkWise</div>
     <nav>
       <a href="#home">Home</a>
@@ -24,29 +28,42 @@
   </header>
 
   <main>
-    <section id="home" class="hero">
+    <section id="home" class="hero glass">
       <div class="hero-content">
-        <h1>Smart Parking Management in Real Time</h1>
-        <p>Track slots, manage bookings, and calculate fees instantly with a professional dashboard.</p>
-        <div class="hero-search">
+        <span class="badge">🚀 Smart Parking v2.0</span>
+        <h1>Modern Parking Operations, One Dashboard</h1>
+        <p>Monitor occupancy, reserve and release slots, and generate billing instantly with a premium real-time interface.</p>
+        <div class="hero-search glass">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input id="findParkingInput" type="text" placeholder="Search slot no. or vehicle type (Car/Bike/Truck)" />
+          <input id="findParkingInput" type="text" placeholder="Search slot number or type (Car/Bike/Truck)" />
           <button id="findParkingBtn" class="btn btn-primary">Find Parking</button>
         </div>
-        <button class="btn btn-secondary" onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})">Book a Slot Now</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('book').scrollIntoView({ behavior: 'smooth' })">Book a Slot</button>
       </div>
       <div class="quick-stats">
-        <article><h3>Total Slots</h3><p id="statTotal">0</p></article>
-        <article><h3>Available</h3><p id="statAvailable">0</p></article>
-        <article><h3>Reserved</h3><p id="statReserved">0</p></article>
+        <article class="stat-card glass">
+          <i class="fa-solid fa-layer-group"></i>
+          <h3>Total Slots</h3>
+          <p id="statTotal">0</p>
+        </article>
+        <article class="stat-card glass">
+          <i class="fa-solid fa-circle-check"></i>
+          <h3>Available Slots</h3>
+          <p id="statAvailable">0</p>
+        </article>
+        <article class="stat-card glass">
+          <i class="fa-solid fa-bookmark"></i>
+          <h3>Reserved Slots</h3>
+          <p id="statReserved">0</p>
+        </article>
       </div>
     </section>
 
-    <section id="dashboard" class="section">
+    <section id="dashboard" class="section glass">
       <div class="section-head">
         <h2>Parking Slot Dashboard</h2>
         <div class="filter-group">
-          <label for="slotTypeFilter">Filter by Type</label>
+          <label for="slotTypeFilter">Filter</label>
           <select id="slotTypeFilter">
             <option value="All">All</option>
             <option value="Car">Car</option>
@@ -55,7 +72,13 @@
           </select>
         </div>
       </div>
-      <div id="slotLegend" class="legend">
+      <div class="occupancy-line glass">
+        <div class="occupancy-track">
+          <span id="occupancyFill"></span>
+        </div>
+        <p id="occupancyLabel">0% Occupied</p>
+      </div>
+      <div class="legend">
         <span><i class="dot available"></i> Available</span>
         <span><i class="dot occupied"></i> Occupied</span>
         <span><i class="dot reserved"></i> Reserved</span>
@@ -63,68 +86,78 @@
       <div id="slotGrid" class="slot-grid"></div>
     </section>
 
-    <section id="book" class="section">
+    <section id="book" class="section glass">
       <h2>Book a Slot</h2>
       <form id="bookingForm" class="booking-form">
-        <input type="text" id="ownerName" placeholder="Owner Name" required />
-        <input type="text" id="vehicleNo" placeholder="Vehicle Number (e.g., MH12AB1234)" required />
-        <select id="vehicleType" required>
-          <option value="">Select Vehicle Type</option>
-          <option value="Car">Car</option>
-          <option value="Bike">Bike</option>
-          <option value="Truck">Truck</option>
-        </select>
-        <input type="datetime-local" id="entryTime" required />
-        <select id="slotSelect" required>
-          <option value="">Select Available Slot</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+        <label class="field">
+          <input type="text" id="ownerName" required placeholder=" " />
+          <span>Owner Name</span>
+        </label>
+        <label class="field">
+          <input type="text" id="vehicleNo" required placeholder=" " />
+          <span>Vehicle Number</span>
+        </label>
+        <label class="field">
+          <input type="datetime-local" id="entryTime" required placeholder=" " />
+          <span>Entry Time</span>
+        </label>
+        <label class="field">
+          <select id="slotSelect" required>
+            <option value="">Select Available Slot</option>
+          </select>
+          <span>Slot Number</span>
+        </label>
+        <div class="vehicle-picker">
+          <p>Vehicle Type</p>
+          <div class="vehicle-options">
+            <button type="button" class="vehicle-option" data-type="Car"><i class="fa-solid fa-car"></i><span>Car</span></button>
+            <button type="button" class="vehicle-option" data-type="Bike"><i class="fa-solid fa-motorcycle"></i><span>Bike</span></button>
+            <button type="button" class="vehicle-option" data-type="Truck"><i class="fa-solid fa-truck"></i><span>Truck</span></button>
+          </div>
+          <input type="hidden" id="vehicleType" required />
+        </div>
+        <button id="bookSubmitBtn" type="submit" class="btn btn-primary">Confirm Booking</button>
       </form>
       <p id="formMessage" class="form-message"></p>
     </section>
 
-    <section id="bookings" class="section">
-      <h2>Active Bookings</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Slot No.</th>
-              <th>Vehicle No.</th>
-              <th>Owner Name</th>
-              <th>Vehicle Type</th>
-              <th>Entry Time</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="bookingsBody"></tbody>
-        </table>
+    <section id="bookings" class="section glass">
+      <div class="section-head">
+        <h2>Active Bookings</h2>
+        <input id="bookingSearchInput" type="text" placeholder="Search by slot, owner, vehicle..." />
       </div>
+      <div id="bookingsGrid" class="booking-cards"></div>
     </section>
 
-    <section id="billing" class="section">
-      <h2>Billing & Occupancy Overview</h2>
+    <section id="billing" class="section glass">
+      <h2>Billing & Fee Calculator</h2>
+      <div class="pricing-strip glass">
+        <span>🏍️ Rs 20/hr</span>
+        <span>🚗 Rs 40/hr</span>
+        <span>🚛 Rs 60/hr</span>
+      </div>
       <div class="billing-grid">
-        <article class="card">
-          <h3>Current Revenue</h3>
+        <article class="card glass">
+          <h3>Total Revenue</h3>
           <p id="revenueText">Rs 0.00</p>
         </article>
-        <article class="card">
+        <article class="card glass">
           <h3>Occupancy by Type</h3>
-          <canvas id="occupancyChart" width="480" height="280"></canvas>
+          <canvas id="occupancyChart" width="560" height="280"></canvas>
         </article>
       </div>
     </section>
 
-    <section id="admin" class="section">
+    <section id="admin" class="section glass">
       <h2>Admin Panel</h2>
-      <div id="adminLocked" class="admin-lock">
+      <div id="adminLocked" class="admin-lock glass">
+        <h3><i class="fa-solid fa-lock"></i> Admin Access</h3>
         <input type="password" id="adminPassword" placeholder="Enter admin password" />
         <button id="unlockAdmin" class="btn btn-primary">Unlock Admin</button>
         <small>Default password: <code>admin123</code></small>
       </div>
       <div id="adminContent" class="admin-content hidden">
-        <div class="admin-actions">
+        <article class="admin-actions glass">
           <h3>Manage Slots</h3>
           <div class="inline-form">
             <input id="newSlotNo" type="text" placeholder="Slot No. (e.g., C-11)" />
@@ -141,23 +174,27 @@
             </select>
             <button id="removeSlotBtn" class="btn btn-danger">Remove Slot</button>
           </div>
-        </div>
-        <div class="admin-summary">
+        </article>
+        <article class="admin-summary glass">
           <h3>Revenue Summary</h3>
           <p>Total Revenue: <strong id="adminRevenue">Rs 0.00</strong></p>
-          <p>Total Completed Sessions: <strong id="adminSessions">0</strong></p>
-        </div>
+          <p>Completed Sessions: <strong id="adminSessions">0</strong></p>
+          <p>Today's Earnings: <strong id="todayRevenue">Rs 0.00</strong></p>
+          <canvas id="revenueChart" width="420" height="230"></canvas>
+        </article>
       </div>
     </section>
 
-    <section id="logs" class="section">
-      <h2>Entry / Exit Logs</h2>
+    <section id="logs" class="section glass">
+      <h2>Entry / Exit Log</h2>
       <div id="logList" class="log-list"></div>
     </section>
   </main>
 
+  <div id="toast" class="toast hidden"></div>
+
   <div id="receiptModal" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content glass">
       <h3><i class="fa-solid fa-receipt"></i> Parking Receipt</h3>
       <div id="receiptContent"></div>
       <div class="modal-actions">
